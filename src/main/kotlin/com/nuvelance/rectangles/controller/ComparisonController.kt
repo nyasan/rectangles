@@ -35,7 +35,7 @@ class ComparisonController(private val comparisonService: ComparisonService) {
     ): ResponseEntity<String> {
         val rectangles = comparisonService.getRectangles(firstRectangle, secondRectangle)
         val result = comparisonService.isAdjacent(rectangles)
-        return ResponseEntity(result, HttpStatus.OK)
+        return ResponseEntity("The adjacent is: ${result.name}", HttpStatus.OK)
     }
 
     @GetMapping("/isOverlapping")

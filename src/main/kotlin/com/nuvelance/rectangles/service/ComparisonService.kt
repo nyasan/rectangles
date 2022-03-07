@@ -1,6 +1,7 @@
 package com.nuvelance.rectangles.service
 
 import com.nuvelance.rectangles.entity.Rectangle
+import com.nuvelance.rectangles.util.AdjacentType
 import org.springframework.stereotype.Service
 import kotlin.math.max
 import kotlin.math.min
@@ -18,12 +19,12 @@ class ComparisonService(private val rectangleService: RectangleService) {
                 )
     }
 
-    fun isAdjacent(rectangles: Pair<Rectangle, Rectangle>): String {
+    fun isAdjacent(rectangles: Pair<Rectangle, Rectangle>): AdjacentType {
         val (firstRectangle, secondRectangle) = rectangles
         val p1 = firstRectangle.x + firstRectangle.width
         val p2 = firstRectangle.y + firstRectangle.height
         if (p1 == secondRectangle.x && firstRectangle.y == secondRectangle.y && firstRectangle.height == secondRectangle.height) {
-            return "Adjacent is Proper"
+            return AdjacentType.PROPER
         }
         if (p1 == secondRectangle.x && IntRange(
                 firstRectangle.y,
@@ -31,16 +32,17 @@ class ComparisonService(private val rectangleService: RectangleService) {
             ).contains(secondRectangle.y)
         ) {
             if (firstRectangle.height > secondRectangle.height) {
-                return "Adjacent is Sub-line"
+                return AdjacentType.SUB_LINE
             }
-            return "Adjacent is Partial"
+            return AdjacentType.PARTIAL
         }
-        return "No adjacent"
+        return AdjacentType.NO_ADJACENT
     }
 
     fun isOverlapping(rectangles: Pair<Rectangle, Rectangle>): String {
         val (firstRectangle, secondRectangle) = rectangles
-        if (isContained(rectangles) || isAdjacent(rectangles) != "No adjacent" || firstRectangle.x > secondRectangle.x + secondRectangle.width ||
+        if (isContained(rectangles) || isAdjacent(rectangles) != AdjacentType.NO_ADJACENT ||
+            firstRectangle.x > secondRectangle.x + secondRectangle.width ||
             secondRectangle.x > firstRectangle.x + firstRectangle.width ||
             secondRectangle.y > firstRectangle.y + firstRectangle.height ||
             firstRectangle.y > secondRectangle.y + secondRectangle.height) {
@@ -67,11 +69,11 @@ class ComparisonService(private val rectangleService: RectangleService) {
     }
 
     fun getRectangles(
-        firstRectangle: Long,
-        secondRectangle: Long
+        firstRectangleId: Long,
+        secondRectangleId: Long
     ): Pair<Rectangle, Rectangle> {
-        val outerRectangle = rectangleService.getOne(firstRectangle)
-        val innerRectangle = rectangleService.getOne(secondRectangle)
-        return Pair(outerRectangle, innerRectangle)
+        val firstRectangle = rectangleService.getOne(firstRectangleId)
+        val secondRectangle = rectangleService.getOne(secondRectangleId)
+        return Pair(firstRectangle, secondRectangle)
     }
 }
