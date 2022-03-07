@@ -62,7 +62,7 @@ internal class ComparisonControllerTest{
             comparisonService.getRectangles(1,2)
         ).thenReturn(rectangles)
         Mockito.`when`(
-            comparisonService.isOverlapping(rectangles = rectangles)
+            comparisonService.isNotOverlapping(rectangles = rectangles)
         ).thenReturn("The intersection coordinates are: (100,120) (60,170)")
 
 

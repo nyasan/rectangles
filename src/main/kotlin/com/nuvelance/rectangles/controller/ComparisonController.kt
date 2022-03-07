@@ -45,7 +45,7 @@ class ComparisonController(private val comparisonService: ComparisonService) {
         @RequestParam(required = true) secondRectangle: Long
     ): ResponseEntity<String> {
         val rectangles = comparisonService.getRectangles(firstRectangle, secondRectangle)
-        val result = comparisonService.isOverlapping(rectangles)
+        val result = comparisonService.isNotOverlapping(rectangles)
         return ResponseEntity(result, HttpStatus.OK)
     }
 }

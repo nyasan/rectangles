@@ -38,7 +38,7 @@ internal class ComparisonServiceTest{
         every { rectangleService.getOne(1) } returns constructRectangle1()
         every { rectangleService.getOne(3) } returns constructRectangle3()
         val rectangles = comparisonService.getRectangles(1, 3)
-        val result = comparisonService.isOverlapping(rectangles)
+        val result = comparisonService.isNotOverlapping(rectangles)
 
         assertEquals("No Intersections", result)
     }
@@ -48,7 +48,7 @@ internal class ComparisonServiceTest{
         every { rectangleService.getOne(1) } returns constructRectangle1()
         every { rectangleService.getOne(2) } returns constructRectangle2()
         val rectangles = comparisonService.getRectangles(1, 2)
-        val result = comparisonService.isOverlapping(rectangles)
+        val result = comparisonService.isNotOverlapping(rectangles)
 
         assertEquals("The intersection coordinates are: (50,200) (100,50)", result)
     }
