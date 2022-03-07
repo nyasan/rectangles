@@ -3,32 +3,40 @@ package com.nuvelance.rectangles.service
 import com.nuvelance.rectangles.entity.Rectangle
 import com.nuvelance.rectangles.repository.RectangleRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class RectangleService(private val rectangleRepository: RectangleRepository) {
 
-    fun getAll(): List<Rectangle>{
+    fun getAll(): List<Rectangle> {
         return rectangleRepository.findAll()
     }
 
-    fun getOne(id: Long): Rectangle{
+    fun getOne(id: Long): Rectangle {
         return rectangleRepository.findById(id).get()
     }
 
-    fun createRectangle(side1: Int, side2: Int): Rectangle{
-        return rectangleRepository.save(Rectangle(null, side1, side2, side1, side2))
+    fun createRectangle(x: Int, y: Int, width: Int, height: Int): Rectangle {
+        return rectangleRepository.save(Rectangle(null, x, y, width, height))
     }
 
-    fun updateRectangle(id: Long, side1: Int, side2: Int): Rectangle{
+    fun updateRectangle(
+        id: Long,
+        x: Optional<Int>,
+        y: Optional<Int>,
+        width: Optional<Int>,
+        height: Optional<Int>
+    ): Rectangle {
         val updateRectangle = getOne(id)
-        updateRectangle.side1 = side1
-        updateRectangle.side2 = side2
-        updateRectangle.side3 = side1
-        updateRectangle.side4 = side2
+        if (x.isPresent) updateRectangle.x = x.get()
+        if (y.isPresent) updateRectangle.y = y.get()
+        if (width.isPresent) updateRectangle.width = width.get()
+        if (height.isPresent) updateRectangle.height = height.get()
+
         return rectangleRepository.save(updateRectangle)
     }
 
-    fun deleteRectangle(id: Long){
+    fun deleteRectangle(id: Long) {
         return rectangleRepository.deleteById(id)
     }
 }

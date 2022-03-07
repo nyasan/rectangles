@@ -10,8 +10,8 @@ data class Rectangle(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
-    var side1: Int,
-    var side2: Int,
-    var side3: Int,
-    var side4: Int
+    var x: Int,
+    var y: Int,
+    var width: Int,
+    var height: Int
 )

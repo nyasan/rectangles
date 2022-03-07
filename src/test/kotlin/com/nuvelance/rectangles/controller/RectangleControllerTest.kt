@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -31,10 +32,10 @@ internal class RectangleControllerTest {
         val str =
             "[{\n" +
                     "    \"id\": 1,\n" +
-                    "    \"side1\": 20,\n" +
-                    "    \"side2\": 20,\n" +
-                    "    \"side3\": 10,\n" +
-                    "    \"side4\": 10\n" +
+                    "    \"x\": 0,\n" +
+                    "    \"y\": 0,\n" +
+                    "    \"width\": 100,\n" +
+                    "    \"height\": 200\n" +
                     "  }]"
         val objectMapper = ObjectMapper()
         val rectangleResponses: List<Rectangle> =
@@ -47,7 +48,7 @@ internal class RectangleControllerTest {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any>(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].side1", Matchers.`is`(20)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].width", Matchers.`is`(100)))
     }
 
     @Test
@@ -55,10 +56,10 @@ internal class RectangleControllerTest {
         val str =
             "{\n" +
                     "    \"id\": 1,\n" +
-                    "    \"side1\": 20,\n" +
-                    "    \"side2\": 20,\n" +
-                    "    \"side3\": 10,\n" +
-                    "    \"side4\": 10\n" +
+                    "    \"x\": 20,\n" +
+                    "    \"y\": 20,\n" +
+                    "    \"width\": 10,\n" +
+                    "    \"height\": 10\n" +
                     "  }"
         val objectMapper = ObjectMapper()
         val rectangleResponses: Rectangle =
@@ -67,10 +68,10 @@ internal class RectangleControllerTest {
             rectangleService.getOne(1)
         ).thenReturn(rectangleResponses)
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rectangle/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/rectangle/id/1"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.side1", Matchers.`is`(20)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.width", Matchers.`is`(10)))
     }
 
     @Test
@@ -78,22 +79,22 @@ internal class RectangleControllerTest {
         val str =
             "{\n" +
                     "    \"id\": 1,\n" +
-                    "    \"side1\": 10,\n" +
-                    "    \"side2\": 10,\n" +
-                    "    \"side3\": 20,\n" +
-                    "    \"side4\": 20\n" +
+                    "    \"x\": 0,\n" +
+                    "    \"y\": 0,\n" +
+                    "    \"width\": 100,\n" +
+                    "    \"height\": 200\n" +
                     "  }"
         val objectMapper = ObjectMapper()
         val rectangleResponses: Rectangle =
             objectMapper.readValue(str, object : TypeReference<Rectangle>() {})
         Mockito.`when`(
-            rectangleService.createRectangle(10, 20)
+            rectangleService.createRectangle(0, 0, 100, 200)
         ).thenReturn(rectangleResponses)
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rectangle?sides12=10&sides34=20"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rectangle?x=0&y=0&width=100&height=200"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.side1", Matchers.`is`(10)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.width", Matchers.`is`(100)))
     }
 
     @Test
@@ -101,10 +102,10 @@ internal class RectangleControllerTest {
         val str =
             "{\n" +
                     "    \"id\": 1,\n" +
-                    "    \"side1\": 10,\n" +
-                    "    \"side2\": 20,\n" +
-                    "    \"side3\": 10,\n" +
-                    "    \"side4\": 10\n" +
+                    "    \"x\": 0,\n" +
+                    "    \"y\": 0,\n" +
+                    "    \"width\": 100,\n" +
+                    "    \"height\": 200\n" +
                     "  }"
         val objectMapper = ObjectMapper()
         val rectangleResponses: Rectangle =
@@ -113,12 +114,12 @@ internal class RectangleControllerTest {
             rectangleService.getOne(1)
         ).thenReturn(rectangleResponses)
         Mockito.`when`(
-            rectangleService.updateRectangle(1, 10, 20)
+            rectangleService.updateRectangle(1, Optional.of(0), Optional.of(0), Optional.of(100), Optional.of(200))
         ).thenReturn(rectangleResponses)
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/rectangle?id=1&sides12=10&sides34=20"))
+        mockMvc.perform(MockMvcRequestBuilders.put("/rectangle?id=1&x=0&y=0&width=100&height=200"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.side1", Matchers.`is`(10)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.width", Matchers.`is`(100)))
     }
 }
