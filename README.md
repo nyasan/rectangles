@@ -1,4 +1,4 @@
-#Rectangles
+## Rectangles
 
 CRUD of rectangles and comparison controller that analyze if two rectangles (by id) are overlapping, adjacent or have intersections.
 

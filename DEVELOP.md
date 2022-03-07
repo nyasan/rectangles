@@ -23,3 +23,7 @@ Run tests
 ./mvnw clean verify
 ```
 Open a browser and hit http://localhost:8080/ for service specs.
+
+### Pre load values<a id="build-run"></a>
+
+Database contains a preloaded 10 rectangles in order to the user test different scenarios.
