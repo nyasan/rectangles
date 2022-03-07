@@ -1,13 +1,12 @@
 package com.nuvelance.rectangles.controller
 
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
 
-@RestController
+@Controller
 class HomeController {
-
-    @GetMapping("/")
+    @GetMapping
     fun home(): String {
-        return "redirect:/swagger-ui.html"
+        return "redirect:/swagger-ui/"
     }
 }
