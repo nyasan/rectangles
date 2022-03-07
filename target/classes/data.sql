@@ -1,1 +1,0 @@
-insert into rectangle (side1,side2,side3,side4) values (20,20,10,10)
